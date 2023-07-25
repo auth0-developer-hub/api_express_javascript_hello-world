@@ -4,6 +4,7 @@ const {
   getProtectedMessage,
   getPublicMessage,
 } = require("./messages.service");
+const { validateAccessToken } = require("../middleware/auth0.middleware.js");
 
 const messagesRouter = express.Router();
 
@@ -13,13 +14,13 @@ messagesRouter.get("/public", (req, res) => {
   res.status(200).json(message);
 });
 
-messagesRouter.get("/protected", (req, res) => {
+messagesRouter.get("/protected", validateAccessToken, (req, res) => {
   const message = getProtectedMessage();
 
   res.status(200).json(message);
 });
 
-messagesRouter.get("/admin", (req, res) => {
+messagesRouter.get("/admin", validateAccessToken, (req, res) => {
   const message = getAdminMessage();
 
   res.status(200).json(message);
